@@ -59,14 +59,17 @@ pipeline {
         }
 
         stage('Deploy to Nexus') {
-            steps {
-                dir('DevOps_Backend') {
-                    script {
-                        sh "${MVN_HOME}/bin/mvn deploy -DskipTests"
-                    }
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'b556b19d-561b-4293-be6d-53c092fff139', usernameVariable: 'admin', passwordVariable: 'admin')]) {
+            dir('DevOps_Backend') {
+                script {
+                    sh "${MVN_HOME}/bin/mvn deploy -DskipTests -Dusername=$NEXUS_USERNAME -Dpassword=$NEXUS_PASSWORD"
                 }
             }
         }
+    }
+}
+
 
     
 
