@@ -58,6 +58,16 @@ pipeline {
             }
         }
 
+        stage('Deploy to Nexus') {
+            steps {
+                dir('DevOps_Backend') {
+                    script {
+                        sh "${MVN_HOME}/bin/mvn deploy -DskipTests"
+                    }
+                }
+            }
+        }
+
     
 
    
