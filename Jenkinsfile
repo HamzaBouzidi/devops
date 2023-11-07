@@ -1,6 +1,6 @@
 pipeline {
     agent any
-// El Boss v2
+// El Boss v3
     environment {
          MVN_HOME = tool 'Maven' // Replace 'M3' with the name of your actuald Maven tool
         NODEJS_HOME = 'NodeJS' // Reeplace with the actual path to Node.js if you need to define it manually
