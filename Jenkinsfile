@@ -1,48 +1,43 @@
 pipeline {
     agent any
-// El Boss v4
-    environment {
-         MVN_HOME = tool 'Maven' // Replace 'M3' with the name of your actuald Maven tool
-        NODEJS_HOME = 'NodeJS' // Reeplace with the actual path to Node.js if you need to define it manually
-        NEXUS_USER ='admin'
-        NEXUS_PASSWORD ='admin'
-        SNAP_REPO ='devopsproject-snapshot'
-        RELEASE_REPO ='devopsproject-release'
-        CENTRAL_REPO ='devopsproject--central-repo'
-        NEXUS_GRP_REPO ='devopsproject--grp-repo'
-        NEXUS_IP='localhost'
-        NEXUS_PORT='8081'
-        NEXUS_LOGIN ='b556b19d-561b-4293-be6d-53c092fff139'
-        version = '1.0'
-        
 
-   
-}
+    environment {
+        MVN_HOME = tool 'Maven' // Make sure 'Maven' is the name of the tool configured in Jenkins
+        NODEJS_HOME = tool 'NodeJS' // Make sure 'NodeJS' is the name of the tool configured in Jenkins
+        NEXUS_USER = 'admin'
+        NEXUS_PASSWORD = 'admin'
+        SNAP_REPO = 'devopsproject-snapshot'
+        RELEASE_REPO = 'devopsproject-release'
+        CENTRAL_REPO = 'devopsproject-central-repo'
+        NEXUS_GRP_REPO = 'devopsproject-grp-repo'
+        NEXUS_IP = 'localhost'
+        NEXUS_PORT = '8081'
+        NEXUS_LOGIN = 'b556b19d-561b-4293-be6d-53c092fff139'
+        // Dynamically assign 'version' or ensure it matches the version in pom.xml
+    }
 
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from the source control
-               checkout scm
+                checkout scm
             }
         }
 
-      stage('Unit Test') {
+        stage('Unit Test') {
             steps {
-                dir('DevOps_Backend') { // Change to your backend directory
+                dir('DevOps_Backend') {
                     script {
-                        sh 'mvn clean test'
+                        sh "${MVN_HOME}/bin/mvn clean test"
                     }
                 }
             }
-        
         }
 
         stage('Build Backend') {
             steps {
-                dir('DevOps_Backend') { // Change to your backend directory
+                dir('DevOps_Backend') {
                     script {
-                        sh '${MVN_HOME}/bin/mvn clean package'
+                        sh "${MVN_HOME}/bin/mvn clean package"
                     }
                     archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
                 }
@@ -64,40 +59,36 @@ pipeline {
                 }
                 failure {
                     echo 'Frontend build failed.'
-                    // Handle failure (e.g., send notifications, perform cleanup, etc.)
                 }
             }
         }
 
         stage('Deploy to Nexus') {
             steps {
-                nexusArtifactUploader(
-                nexusVersion: 'nexus3',
-                protocol: 'http',
-                nexusUrl: "${NEXUS_IP}:${NEXUS_PORT}",
-                groupId: 'QA',
-                version: "${env.BUILD_ID}-${env.BUILD_TIMESTEMP}",
-                repository: "${RELEASE_REPO}",
-                credentialsId: "${NEXUS_LOGIN}",
-                artifacts: [
-                    [artifactId: 'DevOps_Project',
-                     classifier: '',
-                     file: 'my-service-' + version + '.jar',
-                     type: 'jar']
-                ]
-                 )
+                script {
+                    def artifactFile = "DevOps_Backend/target/my-service.jar" // Replace with the actual artifact name pattern
+                    nexusArtifactUploader(
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusUrl: "${NEXUS_IP}:${NEXUS_PORT}",
+                        groupId: 'QA',
+                        version: "${env.BUILD_ID}-${new Date().format('yyyyMMddHHmmss')}", // Correct timestamp format
+                        repository: "${RELEASE_REPO}",
+                        credentialsId: "${NEXUS_LOGIN}",
+                        artifacts: [
+                            [artifactId: 'DevOps_Project',
+                             classifier: '',
+                             file: artifactFile,
+                             type: 'jar']
+                        ]
+                    )
                 }
+            }
         }
-
-
-    
-
-   
     }
 
     post {
         always {
-            // Perform some cleanup
             cleanWs()
         }
     }
