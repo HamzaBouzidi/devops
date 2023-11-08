@@ -12,7 +12,7 @@ pipeline {
         NEXUS_GRP_REPO ='devopsproject--grp-repo'
         NEXUS_IP='localhost'
         NEXUS_PORT='8081'
-        NEXUS_LOGIN ='6f548789-434c-461e-b179-a1b41fe5eb43'
+        NEXUS_LOGIN ='b556b19d-561b-4293-be6d-53c092fff139'
         
 
    
