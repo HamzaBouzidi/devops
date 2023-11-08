@@ -4,6 +4,16 @@ pipeline {
     environment {
          MVN_HOME = tool 'Maven' // Replace 'M3' with the name of your actuald Maven tool
         NODEJS_HOME = 'NodeJS' // Reeplace with the actual path to Node.js if you need to define it manually
+        NEXUS_USER ='admin'
+        NEXUS_PASSWORD ='admin'
+        SNAP_REPO ='devopsproject-snapshot'
+        RELEASE_REPO ='devopsproject-release'
+        CENTRAL_REPO ='devopsproject--central-repo'
+        NEXUS_GRP_REPO ='devopsproject--grp-repo'
+        NEXUS_IP='localhost'
+        NEXUS_PORT='8081'
+        NEXUS_LOGIN ='6f548789-434c-461e-b179-a1b41fe5eb43'
+        
 
    
 }
@@ -59,16 +69,24 @@ pipeline {
         }
 
         stage('Deploy to Nexus') {
-    steps {
-        withCredentials([usernamePassword(credentialsId: 'b556b19d-561b-4293-be6d-53c092fff139', usernameVariable: 'admin', passwordVariable: 'admin')]) {
-            dir('DevOps_Backend') {
-                script {
-                    sh "${MVN_HOME}/bin/mvn deploy -DskipTests -Dusername=$NEXUS_USERNAME -Dpassword=$NEXUS_PASSWORD"
+            steps {
+                nexusArtifactUploader(
+                nexusVersion: 'nexus3',
+                protocol: 'http',
+                nexusUrl: "${NEXUS_IP}:${NEXUS_PORT}",
+                groupId: 'QA',
+                version: "${env.BUILD_ID}-${env.BUILD_TIMESTEMP}",
+                repository: "${RELEASE_REPO}",
+                credentialsId: "${NEXUS_LOGIN}",
+                artifacts: [
+                    [artifactId: 'DevopsProject',
+                     classifier: '',
+                     file: 'my-service-' + version + '.jar',
+                     type: 'jar']
+                ]
+                 )
                 }
-            }
         }
-    }
-}
 
 
     
