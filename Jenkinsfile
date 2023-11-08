@@ -66,7 +66,7 @@ pipeline {
         stage('Deploy to Nexus') {
             steps {
                 script {
-                    def artifactFile = "DevOps_Backend/target/my-service.jar" // Replace with the actual artifact name pattern
+                    def artifactFile = "DevOps_Backend/target/DevOps_Project-1.0.jar" // Replace with the actual artifact name pattern
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
                         protocol: 'http',
