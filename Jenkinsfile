@@ -80,7 +80,7 @@ pipeline {
                 repository: "${RELEASE_REPO}",
                 credentialsId: "${NEXUS_LOGIN}",
                 artifacts: [
-                    [artifactId: 'DevopsProject',
+                    [artifactId: 'DevOps_Project',
                      classifier: '',
                      file: 'my-service-' + version + '.jar',
                      type: 'jar']
