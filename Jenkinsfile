@@ -13,6 +13,7 @@ pipeline {
         NEXUS_IP='localhost'
         NEXUS_PORT='8081'
         NEXUS_LOGIN ='b556b19d-561b-4293-be6d-53c092fff139'
+        version = '1.0'
         
 
    
