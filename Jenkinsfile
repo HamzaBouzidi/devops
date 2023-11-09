@@ -90,7 +90,7 @@ pipeline {
             steps {
                 script {
                     def scannerHome = tool 'sonarqube-scanner'
-                    withSonarQubeEnv('http://localhost:9000/') {
+                    withSonarQubeEnv('SonarQube-10.2.1') {
                         sh "${scannerHome}/bin/sonar-scanner"
                     }
                 }
