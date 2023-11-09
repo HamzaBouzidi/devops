@@ -85,6 +85,17 @@ pipeline {
                 }
             }
         }
+
+        stage('SonarQube') {
+            steps {
+                script {
+                    def scannerHome = tool 'sonarqube-scanner'
+                    withSonarQubeEnv('http://localhost:9000/') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
     }
 
     post {
