@@ -86,9 +86,9 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                script {
+    stage('SonarQube Analysis') {
+    steps {
+        script {
             // Checkout the source code from GitHub
             checkout scm
             
@@ -99,9 +99,10 @@ pipeline {
                     -Dsonar.projectKey=devopsproject \
                     """
             }
-            }
         }
     }
+}
+
     
 
     post {
