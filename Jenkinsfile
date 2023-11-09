@@ -89,15 +89,16 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    def scannerHome = tool 'SonarQubeScanner'
-                    withSonarQubeEnv('SonarQube') {
-                    sh """
-                        ${scannerHome}/bin/sonar-scanner \
-                        -Dsonar.projectKey=devopsproject \
-                        -Dsonar.sources=src
-                        """
-                    }
-                }
+            // Checkout the source code from GitHub
+            checkout scm
+            
+            def scannerHome = tool 'SonarQubeScanner'
+            withSonarQubeEnv('SonarQube') {
+                sh """
+                    ${scannerHome}/bin/sonar-scanner \
+                    -Dsonar.projectKey=devopsproject \
+                    """
+            }
             }
         }
     }
