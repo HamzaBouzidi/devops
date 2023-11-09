@@ -92,7 +92,7 @@ pipeline {
               sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=devopsproject -Dsonar.projectName='devopsproject'"
     }
         }
-    }
+    
 
     post {
         always {
