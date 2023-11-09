@@ -87,14 +87,10 @@ pipeline {
         }
 
         stage('SonarQube') {
-            steps {
-                script {
-                    def scannerHome = tool 'SonarQubeScanner-5.0.1'
-                    withSonarQubeEnv('SonarQube') {
-                        sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                }
-            }
+              def mvn = tool 'MVN_HOME';
+              withSonarQubeEnv() {
+              sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=devopsproject -Dsonar.projectName='devopsproject'"
+    }
         }
     }
 
