@@ -86,12 +86,17 @@ pipeline {
             }
         }
 
-        stage('SonarQube') {
-              def mvn = tool 'SonarQube';
-              withSonarQubeEnv() {
-              sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=devopsproject -Dsonar.projectName='devopsproject'"
-    }
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool 'SonarQubeScanner-5.0.1'
+                    withSonarQubeEnv('SonarQube') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
         }
+    }
     
 
     post {
