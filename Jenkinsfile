@@ -87,7 +87,7 @@ pipeline {
         }
 
         stage('SonarQube') {
-              def mvn = tool 'MVN_HOME';
+              def mvn = tool 'SonarQube';
               withSonarQubeEnv() {
               sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=devopsproject -Dsonar.projectName='devopsproject'"
     }
