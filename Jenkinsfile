@@ -106,27 +106,12 @@ pipeline {
 
 stage('Build and Push Docker Images') {
         steps {
-                script {
-                    // Build the Spring Boot image
-                    dir('DevOps_Backend') {
-                        docker.build("hamzabouzidi/devopsproject-spring-boot-app")
-                    }
-
-
-                    // Build the Angular image
-                   dir('DevOps_Front') {
-                        docker.build("hamzabouzidi/devopsproject-angular-app", "-f Dockerfile .")
-                    }
-
-                    
-                    // Push both images to Docker Hub
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials-id') {
-                        docker.image("hamzabouzidi/devopsproject-spring-boot-app").push()
-                        docker.image("hamzabouzidi/devopsproject-angular-app").push()
-                    }
-                }
+        dir('DevOps_Backend') {
+            script {
+                sh 'docker build -t hamzabouzidi/DevOps_Project .'
             }
         }
+    }
     
 
     }
