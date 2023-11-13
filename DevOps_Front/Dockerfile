@@ -22,7 +22,7 @@ RUN npm run build
 FROM nginx:latest
 
 # Copier l'application Angular compilée de l'étape "builder" vers le dossier public par défaut de Nginx
-COPY --from=builder /app/dist/crudtuto-Front /usr/share/nginx/html
+COPY --from=builder /app/dist/DevOps_Front /usr/share/nginx/html
 
 # Exposer le port 80 pour le serveur web
 EXPOSE 80
