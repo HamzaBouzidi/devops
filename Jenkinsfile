@@ -113,8 +113,8 @@ stage('Build and Push Docker Images') {
             }
 
             // Build and push frontend image
-            dir('DevOps_Frontend') {
-                docker.build("hamzabouzidi/devopsfrontend", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Frontend/Dockerfile .")
+            dir('DevOps_Front') {
+                docker.build("hamzabouzidi/devopsfrontend", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Front/Dockerfile .")
             }
         }
     }
