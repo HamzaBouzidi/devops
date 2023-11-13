@@ -108,7 +108,7 @@ stage('Build and Push Docker Images') {
         steps {
         dir('DevOps_Backend') {
             script {
-                sh 'docker build -t hamzabouzidi/DevOps_Project .'
+                sh 'docker build -t hamzabouzidi/devopsproject .'
             }
         }
     }
