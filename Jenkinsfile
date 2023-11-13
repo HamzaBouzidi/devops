@@ -44,65 +44,65 @@ pipeline {
             }
         }
 
-        stage('Build Frontend') {
-            steps {
-                dir('DevOps_Front') {
-                    echo 'Installing dependencies...'
-                    sh 'npm install'
-                    echo 'Building Angular project...'
-                    sh 'ng build'
-                }
-            }
-            post {
-                success {
-                    echo 'Frontend build successful.'
-                }
-                failure {
-                    echo 'Frontend build failed.'
-                }
-            }
-        }
+        // stage('Build Frontend') {
+        //     steps {
+        //         dir('DevOps_Front') {
+        //             echo 'Installing dependencies...'
+        //             sh 'npm install'
+        //             echo 'Building Angular project...'
+        //             sh 'ng build'
+        //         }
+        //     }
+        //     post {
+        //         success {
+        //             echo 'Frontend build successful.'
+        //         }
+        //         failure {
+        //             echo 'Frontend build failed.'
+        //         }
+        //     }
+        // }
 
-        stage('Deploy to Nexus') {
-            steps {
-                script {
-                    def artifactFile = "DevOps_Backend/target/DevOps_Project-1.0.jar" // Replace with the actual artifact name pattern
-                    nexusArtifactUploader(
-                        nexusVersion: 'nexus3',
-                        protocol: 'http',
-                        nexusUrl: "${NEXUS_IP}:${NEXUS_PORT}",
-                        groupId: 'QA',
-                        version: "${env.BUILD_ID}-${new Date().format('yyyyMMddHHmmss')}", // Correct timestamp format
-                        repository: "${RELEASE_REPO}",
-                        credentialsId: "${NEXUS_LOGIN}",
-                        artifacts: [
-                            [artifactId: 'DevOps_Project',
-                             classifier: '',
-                             file: artifactFile,
-                             type: 'jar']
-                        ]
-                    )
-                }
-            }
-        }
+        // stage('Deploy to Nexus') {
+        //     steps {
+        //         script {
+        //             def artifactFile = "DevOps_Backend/target/DevOps_Project-1.0.jar" // Replace with the actual artifact name pattern
+        //             nexusArtifactUploader(
+        //                 nexusVersion: 'nexus3',
+        //                 protocol: 'http',
+        //                 nexusUrl: "${NEXUS_IP}:${NEXUS_PORT}",
+        //                 groupId: 'QA',
+        //                 version: "${env.BUILD_ID}-${new Date().format('yyyyMMddHHmmss')}", // Correct timestamp format
+        //                 repository: "${RELEASE_REPO}",
+        //                 credentialsId: "${NEXUS_LOGIN}",
+        //                 artifacts: [
+        //                     [artifactId: 'DevOps_Project',
+        //                      classifier: '',
+        //                      file: artifactFile,
+        //                      type: 'jar']
+        //                 ]
+        //             )
+        //         }
+        //     }
+        // }
 
-    stage('SonarQube Analysis') {
-    steps {
-        script {
-            // Checkout the source code from GitHub
-            checkout scm
+//     stage('SonarQube Analysis') {
+//     steps {
+//         script {
+//             // Checkout the source code from GitHub
+//             checkout scm
             
-            def scannerHome = tool 'SonarQubeScanner'
-            withSonarQubeEnv('SonarQube') {
-                sh """
-                    ${scannerHome}/bin/sonar-scanner \
-                    -Dsonar.projectKey=devopsproject \
-                    -Dsonar.java.binaries=DevOps_Backend/target/classes
-                """
-            }
-        }
-    }
-}
+//             def scannerHome = tool 'SonarQubeScanner'
+//             withSonarQubeEnv('SonarQube') {
+//                 sh """
+//                     ${scannerHome}/bin/sonar-scanner \
+//                     -Dsonar.projectKey=devopsproject \
+//                     -Dsonar.java.binaries=DevOps_Backend/target/classes
+//                 """
+//             }
+//         }
+//     }
+// }
 
 stage('Build Docker Images') {
     steps {
