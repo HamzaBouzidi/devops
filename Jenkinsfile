@@ -111,7 +111,8 @@ stage('Build and Push Docker Images') {
                     docker.build("hamzabouzidi/devopsproject-spring-boot-app")
 
                     // Build the Angular image
-                    docker.build("hamzabouzidi/devopsproject-angular-app", "-f \DevopsProject\devops\DevOps_Front\DockerFile .")
+                   docker.build("hamzabouzidi/devopsproject-angular-app", "-f DevopsProject/devops/DevOps_Front/DockerFile .")
+
                     
                     // Push both images to Docker Hub
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials-id') {
