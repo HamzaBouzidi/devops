@@ -116,7 +116,7 @@ stage('Build and Push Docker Images') {
 
     }
 
-    
+    }  
 
     post {
         always {
