@@ -107,17 +107,14 @@ pipeline {
 stage('Build and Push Docker Images') {
     steps {
         script {
-            // Print the current directory to help diagnose path issues
-            sh 'pwd'
-            
-            // List the files in the directory for additional debugging
-            sh 'ls -la /var/lib/jenkins/workspace/projetDevOps/DevOps_Backend'
-            
-            // Attempt to build the Docker image
-            sh 'docker build -t hamzabouzidi/devopsproject .'
+            dir('DevOps_Backend') {
+                // Change the Dockerfile path accordingly
+                docker.build("hamzabouzidi/devopsproject", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Backend/Dockerfile .")
+            }
         }
     }
 }
+
 
 
     }  
