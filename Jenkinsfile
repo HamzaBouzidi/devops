@@ -131,6 +131,24 @@ stage('Build Docker Images') {
         }
     }
 }
+        post {
+        success {
+            stage('Send Email Notification') {
+                steps {
+                    script {
+                       
+                        emailext(
+                            subject: 'Docker Image Pushed to Hub',
+                            body: 'The Docker image has been successfully pushed to the Docker Hub.',
+                            to: 'recipient@example.com',
+                            mimeType: 'text/html',
+                            replyTo: 'jenkins@example.com'
+                        )
+                    }
+                }
+            }
+        }
+    }
          stage('Build and Deploy') {
             steps {
                 script {
