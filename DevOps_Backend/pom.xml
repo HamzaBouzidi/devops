@@ -110,6 +110,7 @@
     </dependencies>
 
     <build>
+<!--          <finalName>devopsproject</finalName> -->
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

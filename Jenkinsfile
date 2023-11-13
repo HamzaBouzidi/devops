@@ -104,28 +104,39 @@ pipeline {
     }
 }
 
-stage('Build and Push Docker Images') {
-        steps {
-                script {
-                    // Build the Spring Boot image
-                    docker.build("hamzabouzidi/devopsproject-spring-boot-app")
+stage('Build Docker Images') {
+    steps {
+        script {
+            // Build and push backend image
+            dir('DevOps_Backend') {
+                docker.build("hamzabouzidi/devopsproject", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Backend/Dockerfile .")
+            }
 
-                    // Build the Angular image
-                    docker.build("hamzabouzidi/devopsproject-angular-app", "-f DevopsProject\devops\DevOps_Front\DockerFile .")
-                    
-                    // Push both images to Docker Hub
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials-id') {
-                        docker.image("hamzabouzidi/devopsproject-spring-boot-app").push()
-                        docker.image("hamzabouzidi/devopsproject-angular-app").push()
-                    }
+            // // Build and push frontend image
+            // dir('DevOps_Front') {
+            //     docker.build("hamzabouzidi/devopsfrontend", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Front/Dockerfile .")
+            // }
+        }
+    }
+}
+       stage('Push image to Hub') {
+    steps {
+        script {
+            withCredentials([string(credentialsId: 'docker-hub-credentials-id', variable: 'DOCKER_HUB_PASSWORD')]) {
+                dir('DevOps_Backend') {
+                    sh "docker login -u hamzabouzidi -p ${DOCKER_HUB_PASSWORD}"
+                    sh "docker push hamzabouzidi/devopsproject"
                 }
             }
         }
+    }
+}
+
     
 
     }
 
-    
+ 
 
     post {
         always {
