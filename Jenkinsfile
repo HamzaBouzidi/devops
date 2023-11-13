@@ -134,7 +134,7 @@ stage('Build Docker Images') {
          stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    sh 'docker-compose -f /path/to/your/docker-compose.yml up -d'
+                    sh 'docker-compose -f /var/lib/jenkins/workspace/projetDevOps/docker-compose.yml up -d'
                 }
             }
         }
