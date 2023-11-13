@@ -130,6 +130,7 @@ stage('Build Docker Images') {
             }
         }
     }
+}
 
 
 
