@@ -108,11 +108,15 @@ stage('Build and Push Docker Images') {
         steps {
                 script {
                     // Build the Spring Boot image
-                    docker.build("hamzabouzidi/devopsproject-spring-boot-app").withRun("--network=host")
+                    dir('DevOps_Backend') {
+                        docker.build("hamzabouzidi/devopsproject-spring-boot-app")
+                    }
 
 
                     // Build the Angular image
-                   docker.build("hamzabouzidi/devopsproject-angular-app", "-f DevopsProject/devops/DevOps_Front/DockerFile .")
+                   dir('DevOps_Front') {
+                        docker.build("hamzabouzidi/devopsproject-angular-app", "-f Dockerfile .")
+                    }
 
                     
                     // Push both images to Docker Hub
