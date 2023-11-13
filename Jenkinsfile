@@ -104,7 +104,7 @@ pipeline {
     }
 }
 
-stage('Build and Push Docker Images') {
+stage('Build Docker Images') {
     steps {
         script {
             // Build and push backend image
@@ -119,6 +119,17 @@ stage('Build and Push Docker Images') {
         }
     }
 }
+        stage('Push image to Hub'){
+            steps{
+                script{
+                   withCredentials([string(credentialsId: 'docker-hub-credentials-id', variable: 'docker-hub-credentials-id')]) {
+                   sh 'docker login -u hamzabouzidi -p ${dockerhubpwd}'
+                   }
+                   sh 'docker push hamzabouzidi/devopsproject'
+                }
+            }
+        }
+    }
 
 
 
