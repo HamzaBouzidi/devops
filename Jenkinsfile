@@ -108,7 +108,8 @@ stage('Build and Push Docker Images') {
         steps {
                 script {
                     // Build the Spring Boot image
-                    docker.build("hamzabouzidi/devopsproject-spring-boot-app")
+                    docker.build("hamzabouzidi/devopsproject-spring-boot-app").withRun("--network=host")
+
 
                     // Build the Angular image
                    docker.build("hamzabouzidi/devopsproject-angular-app", "-f DevopsProject/devops/DevOps_Front/DockerFile .")
