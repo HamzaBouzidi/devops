@@ -119,23 +119,23 @@ stage('Build Docker Images') {
         }
     }
 }
-        stage('Push image to Hub'){
-            steps{
-                script{
-                   withCredentials([string(credentialsId: 'docker-hub-credentials-id', variable: 'docker-hub-credentials-id')]) {
-                   sh 'docker login -u hamzabouzidi -p ${dockerhubpwd}'
-                   }
-                   sh 'docker push hamzabouzidi/devopsproject'
+        stage('Push image to Hub') {
+    steps {
+        script {
+            withCredentials([string(credentialsId: 'docker-hub-credentials-id', variable: 'dockerhubpwd')]) {
+                dir('DevOps_Backend') {
+                    sh "docker login -u hamzabouzidi -p ${dockerhubpwd}"
+                    sh "docker push hamzabouzidi/devopsproject"
                 }
             }
         }
+    }
+}
     
 
 
 
-
-
-    }  
+ 
 
     post {
         always {
