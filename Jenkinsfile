@@ -107,13 +107,19 @@ pipeline {
 stage('Build and Push Docker Images') {
     steps {
         script {
+            // Build and push backend image
             dir('DevOps_Backend') {
-                // Change the Dockerfile path accordingly
                 docker.build("hamzabouzidi/devopsproject", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Backend/Dockerfile .")
+            }
+
+            // Build and push frontend image
+            dir('DevOps_Frontend') {
+                docker.build("hamzabouzidi/devopsfrontend", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Frontend/Dockerfile .")
             }
         }
     }
 }
+
 
 
 
