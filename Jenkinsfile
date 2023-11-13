@@ -131,6 +131,18 @@ stage('Build Docker Images') {
         }
     }
 }
+         stage('Deploy with Docker Compose') {
+            steps {
+                script {
+                    // Install Docker Compose
+                    sh "curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose"
+                    sh 'chmod +x /usr/local/bin/docker-compose'
+
+                    // Deploy with Docker Compose
+                    sh 'docker-compose -f docker-compose.yml up -d'
+                }
+            }
+        }
 
     
 
