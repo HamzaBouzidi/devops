@@ -21,8 +21,11 @@ RUN npm run build
 # Étape 2 : Utiliser Nginx comme image de base pour servir l'application Angular
 FROM nginx:latest
 
-# Copier l'application Angular compilée de l'étape "builder" vers le dossier public par défaut de Nginx
-COPY --from=builder /DevOps_Front /usr/share/nginx/html
+# Add this line in the builder stage to print the contents
+RUN ls -la /app/dist
+
+# Copy the Angular build artifacts to Nginx
+COPY --from=builder /app/dist/DevOps_Front /usr/share/nginx/html
 
 # Exposer le port 80 pour le serveur web
 EXPOSE 80
