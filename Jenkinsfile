@@ -81,28 +81,28 @@ pipeline {
         //     }
         // }
 
-        // stage('Deploy to Nexus') {
-        //     steps {
-        //         script {
-        //             def artifactFile = "DevOps_Backend/target/DevOps_Project-1.0.jar" // Replace with the actual artifact name pattern
-        //             nexusArtifactUploader(
-        //                 nexusVersion: 'nexus3',
-        //                 protocol: 'http',
-        //                 nexusUrl: "${NEXUS_IP}:${NEXUS_PORT}",
-        //                 groupId: 'QA',
-        //                 version: "${env.BUILD_ID}-${new Date().format('yyyyMMddHHmmss')}", // Correct timestamp format
-        //                 repository: "${RELEASE_REPO}",
-        //                 credentialsId: "${NEXUS_LOGIN}",
-        //                 artifacts: [
-        //                     [artifactId: 'DevOps_Project',
-        //                      classifier: '',
-        //                      file: artifactFile,
-        //                      type: 'jar']
-        //                 ]
-        //             )
-        //         }
-        //     }
-        // }
+        stage('Deploy to Nexus') {
+            steps {
+                script {
+                    def artifactFile = "DevOps_Backend/target/DevOps_Project-1.0.jar" // Replace with the actual artifact name pattern
+                    nexusArtifactUploader(
+                        nexusVersion: 'nexus3',
+                        protocol: 'http',
+                        nexusUrl: "${NEXUS_IP}:${NEXUS_PORT}",
+                        groupId: 'QA',
+                        version: "${env.BUILD_ID}-${new Date().format('yyyyMMddHHmmss')}", // Correct timestamp format
+                        repository: "${RELEASE_REPO}",
+                        credentialsId: "${NEXUS_LOGIN}",
+                        artifacts: [
+                            [artifactId: 'DevOps_Project',
+                             classifier: '',
+                             file: artifactFile,
+                             type: 'jar']
+                        ]
+                    )
+                }
+            }
+        }
 
 //     stage('SonarQube Analysis') {
 //     steps {
@@ -122,58 +122,58 @@ pipeline {
 //     }
 // }
 
-stage('Build Docker Images') {
-    steps {
-        script {
-            // Build and push backend image
-            dir('DevOps_Backend') {
-                docker.build("hamzabouzidi/devopsproject", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Backend/Dockerfile .")
-            }
+// stage('Build Docker Images') {
+//     steps {
+//         script {
+//             // Build and push backend image
+//             dir('DevOps_Backend') {
+//                 docker.build("hamzabouzidi/devopsproject", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Backend/Dockerfile .")
+//             }
 
-            // // Build and push frontend image
-            // dir('DevOps_Front') {
-            //     docker.build("hamzabouzidi/devopsfrontend", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Front/Dockerfile .")
-            // }
-        }
-    }
-}
-       stage('Push image to Hub') {
-    steps {
-        script {
-            withCredentials([string(credentialsId: 'docker-hub-credentials-id', variable: 'DOCKER_HUB_PASSWORD')]) {
-                dir('DevOps_Backend') {
-                    sh "docker login -u hamzabouzidi -p ${DOCKER_HUB_PASSWORD}"
-                    sh "docker push hamzabouzidi/devopsproject"
-                }
-            }
-        }
-    }
-}
-        post {
-        success {
-            stage('Send Email Notification') {
-                steps {
-                    script {
+//             // // Build and push frontend image
+//             // dir('DevOps_Front') {
+//             //     docker.build("hamzabouzidi/devopsfrontend", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Front/Dockerfile .")
+//             // }
+//         }
+//     }
+// }
+//        stage('Push image to Hub') {
+//     steps {
+//         script {
+//             withCredentials([string(credentialsId: 'docker-hub-credentials-id', variable: 'DOCKER_HUB_PASSWORD')]) {
+//                 dir('DevOps_Backend') {
+//                     sh "docker login -u hamzabouzidi -p ${DOCKER_HUB_PASSWORD}"
+//                     sh "docker push hamzabouzidi/devopsproject"
+//                 }
+//             }
+//         }
+//     }
+// }
+//         post {
+//         success {
+//             stage('Send Email Notification') {
+//                 steps {
+//                     script {
                        
-                        emailext(
-                            subject: 'Docker Image Pushed to Hub',
-                            body: 'The Docker image has been successfully pushed to the Docker Hub.',
-                            to: 'recipient@example.com',
-                            mimeType: 'text/html',
-                            replyTo: 'jenkins@example.com'
-                        )
-                    }
-                }
-            }
-        }
-    }
-         stage('Build and Deploy') {
-            steps {
-                script {
-                    sh '/usr/bin/docker-compose -f /var/lib/jenkins/workspace/projetDevOps/docker-compose.yml up -d'
-                }
-            }
-}
+//                         emailext(
+//                             subject: 'Docker Image Pushed to Hub',
+//                             body: 'The Docker image has been successfully pushed to the Docker Hub.',
+//                             to: 'recipient@example.com',
+//                             mimeType: 'text/html',
+//                             replyTo: 'jenkins@example.com'
+//                         )
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//          stage('Build and Deploy') {
+//             steps {
+//                 script {
+//                     sh '/usr/bin/docker-compose -f /var/lib/jenkins/workspace/projetDevOps/docker-compose.yml up -d'
+//                 }
+//             }
+// }
 
 
     
