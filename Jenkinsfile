@@ -177,7 +177,7 @@ pipeline {
             steps {
                 script {
                     // Use docker-compose or any other method to deploy Prometheus
-                    sh '/usr/bin/docker-compose -f /path/to/prometheus/docker-compose.yml up -d'
+                    sh 'docker-compose -f /var/lib/jenkins/workspace/projetDevOps/docker-compose-prometheus.yml up -d'
                 }
             }
         }
@@ -185,7 +185,7 @@ pipeline {
             steps {
                 script {
                     // Use docker-compose or any other method to deploy Grafana
-                    sh '/usr/bin/docker-compose -f /path/to/grafana/docker-compose.yml up -d'
+                    sh 'docker-compose -f /var/lib/jenkins/workspace/projetDevOps/docker-compose-grafana.yml up -d'
                 }
             }
         }
