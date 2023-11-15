@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+//hello
     environment {
         MVN_HOME = tool 'Maven' // Make sure 'Maven' is the name of the tool configured in Jenkins
         NODEJS_HOME = tool 'NodeJS' // Make sure 'NodeJS' is the name of the tool configured in Jenkins
