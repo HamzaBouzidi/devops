@@ -173,6 +173,23 @@ pipeline {
 //                 }
 //             }
 // }
+        stage('Deploy Prometheus') {
+            steps {
+                script {
+                    // Use docker-compose or any other method to deploy Prometheus
+                    sh '/usr/bin/docker-compose -f /path/to/prometheus/docker-compose.yml up -d'
+                }
+            }
+        }
+        stage('Deploy Grafana') {
+            steps {
+                script {
+                    // Use docker-compose or any other method to deploy Grafana
+                    sh '/usr/bin/docker-compose -f /path/to/grafana/docker-compose.yml up -d'
+                }
+            }
+        }
+    }
 
 
     
