@@ -131,6 +131,7 @@ pipeline {
                     ${scannerHome}/bin/sonar-scanner \
                     -Dsonar.projectKey=devopsproject \
                     -Dsonar.java.binaries=DevOps_Backend/target/classes
+                    -Dsonar.coverage.jacoco.xmlReportPaths=DevOps_Backend/target/site/jacoco/jacoco.xml
                 """
             }
         }
