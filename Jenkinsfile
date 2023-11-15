@@ -60,6 +60,18 @@ pipeline {
                     archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
                 }
             }
+            post {
+        success {
+            mail to: 'justfortesthamza@gmail.com',
+                 subject: "Build Backend",
+                 body: "Build Backend succeeded."
+        }
+        failure {
+            mail to: 'justfortesthamza@gmail.com',
+                 subject: "Build Backend",
+                 body: "Build Backend failed."
+        }
+    }
         }
 
         // stage('Build Frontend') {
@@ -80,6 +92,9 @@ pipeline {
         //         }
         //     }
         // }
+
+        
+        
 
         stage('Deploy to Nexus') {
             steps {
@@ -149,24 +164,7 @@ pipeline {
 //         }
 //     }
 // }
-//         post {
-//         success {
-//             stage('Send Email Notification') {
-//                 steps {
-//                     script {
-                       
-//                         emailext(
-//                             subject: 'Docker Image Pushed to Hub',
-//                             body: 'The Docker image has been successfully pushed to the Docker Hub.',
-//                             to: 'recipient@example.com',
-//                             mimeType: 'text/html',
-//                             replyTo: 'jenkins@example.com'
-//                         )
-//                     }
-//                 }
-//             }
-//         }
-//     }
+      
 //          stage('Build and Deploy') {
 //             steps {
 //                 script {
