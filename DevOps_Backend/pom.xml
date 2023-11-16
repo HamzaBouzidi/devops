@@ -25,6 +25,12 @@
              </repository>
     </distributionManagement>
     <dependencies>
+             <!-- Add the Micrometer dependency -->
+         <dependency>
+             <groupId>io.micrometer</groupId>
+             <artifactId>micrometer-registry-prometheus</artifactId>
+         </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
