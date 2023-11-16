@@ -1,6 +1,6 @@
 pipeline {
     agent any
-//hello
+//just for trigger test
     environment {
         MVN_HOME = tool 'Maven' // Make sure 'Maven' is the name of the tool configured in Jenkins
         NODEJS_HOME = tool 'NodeJS' // Make sure 'NodeJS' is the name of the tool configured in Jenkins
@@ -13,7 +13,7 @@ pipeline {
         NEXUS_IP = 'localhost'
         NEXUS_PORT = '8081'
         NEXUS_LOGIN = 'b556b19d-561b-4293-be6d-53c092fff139'
-        // Dynamically assign 'version' or ensure it matches the version in pom.xml
+        
     }
 
     stages {
@@ -83,14 +83,14 @@ pipeline {
                     sh 'ng build'
                 }
             }
-            post {
-                success {
-                    echo 'Frontend build successful.'
-                }
-                failure {
-                    echo 'Frontend build failed.'
-                }
-            }
+            // post {
+            //     success {
+            //         echo 'Frontend build successful.'
+            //     }
+            //     failure {
+            //         echo 'Frontend build failed.'
+            //     }
+            // }
         }
 
         
@@ -141,12 +141,11 @@ pipeline {
 stage('Build Docker Images') {
     steps {
         script {
-            // Build and push backend image
+            
             dir('DevOps_Backend') {
                 docker.build("hamzabouzidi/devopsproject", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Backend/Dockerfile .")
             }
 
-            // // Build and push frontend image
             // dir('DevOps_Front') {
             //     docker.build("hamzabouzidi/devopsfrontend", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Front/Dockerfile .")
             // }
