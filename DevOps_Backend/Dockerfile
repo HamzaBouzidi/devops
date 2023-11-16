@@ -2,7 +2,7 @@
 FROM openjdk:11
 
 # Exposez le port sur lequel votre application Java écoute
-EXPOSE 8089
+EXPOSE 8083
 
 # Définissez le répertoire de travail dans le conteneur
 WORKDIR /app
