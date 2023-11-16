@@ -74,24 +74,24 @@ pipeline {
     }
         }
 
-        // stage('Build Frontend') {
-        //     steps {
-        //         dir('DevOps_Front') {
-        //             echo 'Installing dependencies...'
-        //             sh 'npm install'
-        //             echo 'Building Angular project...'
-        //             sh 'ng build'
-        //         }
-        //     }
-        //     post {
-        //         success {
-        //             echo 'Frontend build successful.'
-        //         }
-        //         failure {
-        //             echo 'Frontend build failed.'
-        //         }
-        //     }
-        // }
+        stage('Build Frontend') {
+            steps {
+                dir('DevOps_Front') {
+                    echo 'Installing dependencies...'
+                    sh 'npm install'
+                    echo 'Building Angular project...'
+                    sh 'ng build'
+                }
+            }
+            post {
+                success {
+                    echo 'Frontend build successful.'
+                }
+                failure {
+                    echo 'Frontend build failed.'
+                }
+            }
+        }
 
         
         
@@ -138,57 +138,50 @@ pipeline {
     }
 }
 
-// stage('Build Docker Images') {
-//     steps {
-//         script {
-//             // Build and push backend image
-//             dir('DevOps_Backend') {
-//                 docker.build("hamzabouzidi/devopsproject", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Backend/Dockerfile .")
-//             }
+stage('Build Docker Images') {
+    steps {
+        script {
+            // Build and push backend image
+            dir('DevOps_Backend') {
+                docker.build("hamzabouzidi/devopsproject", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Backend/Dockerfile .")
+            }
 
-//             // // Build and push frontend image
-//             // dir('DevOps_Front') {
-//             //     docker.build("hamzabouzidi/devopsfrontend", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Front/Dockerfile .")
-//             // }
-//         }
-//     }
-// }
-//        stage('Push image to Hub') {
-//     steps {
-//         script {
-//             withCredentials([string(credentialsId: 'docker-hub-credentials-id', variable: 'DOCKER_HUB_PASSWORD')]) {
-//                 dir('DevOps_Backend') {
-//                     sh "docker login -u hamzabouzidi -p ${DOCKER_HUB_PASSWORD}"
-//                     sh "docker push hamzabouzidi/devopsproject"
-//                 }
-//             }
-//         }
-//     }
-// }
+            // // Build and push frontend image
+            // dir('DevOps_Front') {
+            //     docker.build("hamzabouzidi/devopsfrontend", "-f /var/lib/jenkins/workspace/projetDevOps/DevOps_Front/Dockerfile .")
+            // }
+        }
+    }
+}
+       stage('Push image to Hub') {
+    steps {
+        script {
+            withCredentials([string(credentialsId: 'docker-hub-credentials-id', variable: 'DOCKER_HUB_PASSWORD')]) {
+                dir('DevOps_Backend') {
+                    sh "docker login -u hamzabouzidi -p ${DOCKER_HUB_PASSWORD}"
+                    sh "docker push hamzabouzidi/devopsproject"
+                }
+            }
+        }
+    }
+}
       
-//          stage('Build and Deploy') {
-//             steps {
-//                 script {
-//                     sh '/usr/bin/docker-compose -f /var/lib/jenkins/workspace/projetDevOps/docker-compose.yml up -d'
-//                 }
-//             }
-// }
-        stage('Deploy Prometheus') {
+         stage('Build and Deploy') {
             steps {
                 script {
-                    // Use docker-compose or any other method to deploy Prometheus
-                    sh 'docker-compose -f /var/lib/jenkins/workspace/projetDevOps/docker-compose-prometheus.yml up -d'
+                    sh '/usr/bin/docker-compose -f /var/lib/jenkins/workspace/projetDevOps/docker-compose.yml up -d'
+                }
+            }
+}
+        stage('Prometheus / Grafana') {
+            steps {
+                script {
+                    sh 'docker start prometheus'
+                    sh 'docker start grafana'
                 }
             }
         }
-        stage('Deploy Grafana') {
-            steps {
-                script {
-                    // Use docker-compose or any other method to deploy Grafana
-                    sh 'docker-compose -f /var/lib/jenkins/workspace/projetDevOps/docker-compose-grafana.yml up -d'
-                }
-            }
-        }
+        
     }
 
 
